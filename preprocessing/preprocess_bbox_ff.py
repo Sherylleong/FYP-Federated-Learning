@@ -13,7 +13,6 @@ from base64 import b64encode
 import glob
 import time
 from PIL import Image
-from facenet_pytorch import MTCNN, InceptionResnetV1, extract_face
 from tqdm import tqdm
 from functools import partial
 from PIL import Image
