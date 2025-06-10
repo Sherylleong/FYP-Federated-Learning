@@ -46,14 +46,14 @@ device = 'cuda'
 
 SOURCE_FOLDER= r"D:\FF"
 
-DEEPFAKE_TYPE = 'FaceSwap'
+DEEPFAKE_TYPE = 'DeepFakeDetection'
 ORI_VIDEOS_FOLDER = fr'original_sequences\youtube\c23\videos'
 MANIP_VIDEOS_FOLDER = fr'manipulated_sequences\{DEEPFAKE_TYPE}\c23\videos'
-ORI_BOXES_FOLDER = fr'original_sequences'
-MANIP_BOXES_FOLDER = fr'manipulated_sequences\{DEEPFAKE_TYPE}'
+ORI_BOXES_FOLDER = fr'original_sequences_youtube_actors\youtube'
+MANIP_BOXES_FOLDER = fr'manipulated_sequences\DeepFakeDetection'
 
 
-DATA_FOLDER = os.path.join(SOURCE_FOLDER, ORI_VIDEOS_FOLDER)
+DATA_FOLDER = os.path.join(SOURCE_FOLDER, MANIP_VIDEOS_FOLDER)
 
 IMG_SIZE = 224
 BATCH_SIZE = 64
@@ -111,7 +111,7 @@ import json
 
 def save_face_bbox(boxes, out_dir, video_name):
     os.makedirs(out_dir, exist_ok=True)
-    with open(os.path.join(out_dir, "{}.json".format(video_name)), "w") as f:
+    with open(os.path.join(out_dir, f"{video_name}.json"), "w") as f:
         json.dump(boxes, f) # raw bounding box data for each video for frame
 
 

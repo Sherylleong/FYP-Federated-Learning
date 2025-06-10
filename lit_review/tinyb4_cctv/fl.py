@@ -25,7 +25,7 @@ std = (0.229, 0.224, 0.225)
 BATCH_SIZE = 64
 device = 'cuda'
 EPOCHS = 100
-LR = 0.001
+LR = 0.01
 PATIENCE = 5
 loss_fn = torch.nn.BCEWithLogitsLoss()
 
@@ -142,7 +142,7 @@ def evaluate_model(model, dataloader, criterion):
     total = 0
     with torch.no_grad():
         for inputs, labels in dataloader:
-            inputs, labels = inputs.squeeze(0).to(device).float(), labels.squeeze(0).to(device).float()
+            inputs, labels = inputs.to(device).float(), labels.squeeze(0).to(device).float()
             outputs = model(inputs).squeeze()
             loss = criterion(outputs, labels)
             total_loss += loss.item() * inputs.size(0)
@@ -156,7 +156,7 @@ def evaluate_model(model, dataloader, criterion):
 
 import os
 
-def save_model(model, model_name=MODEL_NAME, folder=r"lit_review\enhance_fl_resnet\models"):
+def save_model(model, model_name=MODEL_NAME, folder=r"lit_review\tinyb4_cctv\models"):
     os.makedirs(folder, exist_ok=True)  # Creates folder if it doesn't exist (relative to current dir)
     save_path = os.path.join(folder, model_name)
     torch.save(model.state_dict(), save_path)
@@ -191,7 +191,7 @@ def federated_training(client_train_loaders, client_val_loaders, test_loader, to
                 # train local model
                 local_model.train()
                 for inputs, labels in client_train_loader:
-                    inputs, labels = inputs.squeeze(0).to(device), labels.squeeze(0).to(device).float()
+                    inputs, labels = inputs.to(device), labels.squeeze(0).to(device).float()
 
                     local_optimizer.zero_grad()
 
@@ -207,7 +207,7 @@ def federated_training(client_train_loaders, client_val_loaders, test_loader, to
                 total = 0
                 with torch.no_grad():
                     for val_inputs, val_labels in client_val_loader:
-                        val_inputs = val_inputs.squeeze(0).to(device)
+                        val_inputs = val_inputs.to(device)
                         val_labels = val_labels.squeeze(0).to(device).float()
 
                         val_outputs = local_model(val_inputs).squeeze()
@@ -257,9 +257,9 @@ if __name__ == "__main__":
     train_transform = ImageTransform(IMG_SIZE, mean, std, train=True)
     val_test_transform = ImageTransform(IMG_SIZE, mean, std, train=False)
 
-    combined_train_dataset = datasets.ImageFolder(r'D:\FF\crops\combined_imagefolder\train', transform=train_transform)
-    combined_val_dataset = datasets.ImageFolder(r'D:\FF\crops\combined_imagefolder\val', transform=val_test_transform)
-    test_dataset = datasets.ImageFolder(r'D:\FF\crops\combined_imagefolder\test', transform=val_test_transform)
+    combined_train_dataset = datasets.ImageFolder(r'D:\FF\crops\combined_imagefolder_701515\train', transform=train_transform)
+    combined_val_dataset = datasets.ImageFolder(r'D:\FF\crops\combined_imagefolder_701515\val', transform=val_test_transform)
+    test_dataset = datasets.ImageFolder(r'D:\FF\crops\combined_imagefolder_701515\test', transform=val_test_transform)
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=8)
 
     # SPLIT CLIENTS

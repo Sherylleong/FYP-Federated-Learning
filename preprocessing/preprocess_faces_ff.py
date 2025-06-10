@@ -46,7 +46,7 @@ plt.rc('ytick', labelsize=10)
 device = 'cuda'
 
 
-SOURCE_FOLDER= r"D:"
+SOURCE_FOLDER= r"D:\FF"
 
 ORI_FOLDER = r'original_sequences\youtube\c23\videos'
 MANIP_FOLDER = r'manipulated_sequences\Deepfakes\c23\videos'
@@ -224,8 +224,8 @@ def save_face_crops_image(faces, save_folder, video_name):
         #face = Image.fromarray(face.numpy())
         #print(face.shape)
         # Save the image
-        print(os.path.join(save_folder, f"{video_name}_{i}.png"))
-        face.save(os.path.join(save_folder, f"{video_name}_{i}.png")) 
+        print(os.path.join(save_folder, f"{video_name}_{i}_{DEEPFAKE_TYPE}.png"))
+        face.save(os.path.join(save_folder, f"{video_name}_{i}_{DEEPFAKE_TYPE}.png")) 
 
 def get_video_names_from_folder(folder_path):
     # List all files in the specified folder
@@ -256,20 +256,21 @@ def preprocess_image(source_folder, to_folder, boxes_folder, video_name):
 
 
 SOURCE_FOLDER= r"D:\FF"
-
-
+DEEPFAKE_TYPE = 'NeuralTextures'
+# D:\FF\extracted_boxes\original_sequences_youtube_actor
 ORI_VIDEOS_FOLDER = r'original_sequences\youtube\c23\videos'
-MANIP_VIDEOS_FOLDER = r'manipulated_sequences\Deepfakes\c23\videos'
+MANIP_VIDEOS_FOLDER = rf'manipulated_sequences\{DEEPFAKE_TYPE}\c23\videos'
 ORI_FACES_FOLDER = r'original_sequences'
 MANIP_FACES_FOLDER = r'manipulated_sequences'
-
+ORI_BOXES_FOLDER = r'original_sequences_youtube_actors\youtube'
+MANIP_BOXES_FOLDER = fr'manipulated_sequences\{DEEPFAKE_TYPE}'
 if __name__ == '__main__':
 
-    source_folder = ORI_VIDEOS_FOLDER
-    to_folder = ORI_FACES_FOLDER
-    boxes_folder = os.path.join(SOURCE_FOLDER, 'extracted_boxes', ORI_BOXES_FOLDER)
+    source_folder = MANIP_VIDEOS_FOLDER
+    to_folder = MANIP_FACES_FOLDER
+    boxes_folder = os.path.join(SOURCE_FOLDER, 'extracted_boxes', MANIP_BOXES_FOLDER)
 
-    out_dir = os.path.join(SOURCE_FOLDER, 'crops', to_folder)
+    out_dir = os.path.join(SOURCE_FOLDER, 'crops_no_split', to_folder)
 
     os.makedirs(out_dir, exist_ok=True)
     video_names = get_video_names_from_folder(os.path.join(SOURCE_FOLDER, source_folder))

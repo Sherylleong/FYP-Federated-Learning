@@ -25,7 +25,7 @@ std = (0.229, 0.224, 0.225)
 BATCH_SIZE = 64
 device = 'cuda'
 EPOCHS = 100
-LR = 0.001
+LR = 0.01
 PATIENCE = 5
 loss_fn = torch.nn.BCEWithLogitsLoss()
 
